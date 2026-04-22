@@ -1,94 +1,95 @@
-```markdown
-# BSPAssist — Ticket Raising & Management App 🎫
+# BSPAssist — Mobile Ticketing App
 
-A Flutter-based mobile app for submitting, tracking, and managing service tickets.  
-Built with clean architecture principles, offline support, and accessible UI design.
+A Flutter mobile app for submitting and tracking service/support tickets, backed by Firebase Authentication. Built as a fullstack mobile project with role-based navigation, session persistence, and offline-aware state handling.
 
 ---
 
-## ✨ Features
-- 🧑‍💼 **User Roles:** Employee, Admin, and Support Agent views  
-- 📨 **Ticket Lifecycle:** Create, assign, update, and close tickets in real time  
-- 📶 **Offline-first:** Local cache with sync-on-reconnect functionality  
-- 🔔 **Notifications:** Real-time status updates and reminders  
-- 🎨 **Accessibility & Theming:** Dark mode, scalable text, and high-contrast colors  
+## Features
+
+- **Role-based views** — separate dashboards for Users, Admins, and Support Agents
+- **Firebase Auth** — email/password login and registration with real-time session management
+- **Session persistence** — login state stored via `SharedPreferences` so users don't re-authenticate on relaunch
+- **Ticket lifecycle** — create, track, and close tickets with expandable list UI
+- **Splash screen + routing** — app checks auth state on launch and routes accordingly
+- **Profile screen** — editable user profile accessible from the nav drawer
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
+
 | Layer | Tools |
-|-------|-------|
-| Framework | Flutter (Dart 3.x) |
-| Database | Firebase / REST API |
-| Local Storage | Hive / Sqflite |
-| State Mgmt | Riverpod / Provider |
-| CI/CD | GitHub Actions |
-| Version Control | Git & GitHub |
+|---|---|
+| Framework | Flutter / Dart 3.x |
+| Auth & Backend | Firebase Authentication, Firebase Core |
+| Local Persistence | SharedPreferences |
+| Testing | flutter_test, Mockito |
+| Linting | flutter_lints |
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
+
+```
+lib/
+├── components/        # Reusable widgets (drawer, list tile, text box, ticket card)
+├── pages/
+│   ├── Dashboard/     # Admin, User, and main dashboard views
+│   ├── profile/       # Profile screen
+│   ├── login_page.dart
+│   ├── register.dart
+│   └── splash_screen.dart
+├── firebase_options.dart
+└── main.dart          # Entry point — auth check + route initialization
 ```
 
-lib/
-core/               # constants, errors, routing, theming
-data/               # models, data sources, repository impls
-features/
-auth/
-tickets/
-domain/
-presentation/
-application/
-app.dart
-
-````
-
 ---
 
-## 🧪 Testing & CI
-Run static analysis and tests locally:
+## Getting Started
+
+**Prerequisites:** Flutter SDK ≥ 3.0.6, a Firebase project with Authentication enabled.
+
 ```bash
-flutter analyze
-flutter test
-````
+# Clone the repo
+git clone https://github.com/Plk-g/BSPAssist-Ticketing.git
+cd BSPAssist-Ticketing
 
-GitHub Actions build & test automatically on each commit.
+# Install dependencies
+flutter pub get
 
----
+# Run on a connected device or emulator
+flutter run
+```
 
-## 🧭 Roadmap
-
-* [ ] Add analytics dashboard for Admins
-* [ ] SLA timers and escalations
-* [ ] Ticket comments & in-app chat
-* [ ] Multi-language support (EN + HI)
+> **Note:** You'll need your own `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) from your Firebase project. The files in this repo are placeholders.
 
 ---
 
-## 📸 Screenshots (coming soon)
+## Running Tests
 
-| Login                            | Create Ticket                      | Dashboard                                |
-| -------------------------------- | ---------------------------------- | ---------------------------------------- |
-| ![login](docs/screens/login.png) | ![create](docs/screens/create.png) | ![dashboard](docs/screens/dashboard.png) |
-
----
-
-## 🧠 Learnings
-
-* Implemented feature-based architecture for scalability
-* Explored state management and offline-first design
-* Strengthened clean code and documentation practices
+```bash
+flutter analyze   # Static analysis
+flutter test      # Unit + widget tests
+```
 
 ---
 
-## 👩‍💻 Author
+## Roadmap
 
-**Palak Gupta**
-MS CS @ NYU Tandon | Building accessible & intelligent tech
-[LinkedIn](https://www.linkedin.com/in/palakg008) • [GitHub](https://github.com/Plk-g)
+- [ ] Firestore integration for real-time ticket updates
+- [ ] Push notifications for ticket status changes
+- [ ] Admin analytics dashboard
+- [ ] SLA timers and escalation rules
+- [ ] Multi-language support (EN + HI)
 
 ---
 
-## 📜 License
+## Author
 
-MIT License — feel free to use and modify.
+**Palak Gupta**  
+[GitHub](https://github.com/Plk-g)
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
