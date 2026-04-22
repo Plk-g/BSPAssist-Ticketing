@@ -1,95 +1,98 @@
-# BSPAssist — Mobile Ticketing App
+# BSPAssist 🎫
 
-A Flutter mobile app for submitting and tracking service/support tickets, backed by Firebase Authentication. Built as a fullstack mobile project with role-based navigation, session persistence, and offline-aware state handling.
+> **Mobile-first service ticketing — built for teams that don't sit at desks.**
 
----
-
-## Features
-
-- **Role-based views** — separate dashboards for Users, Admins, and Support Agents
-- **Firebase Auth** — email/password login and registration with real-time session management
-- **Session persistence** — login state stored via `SharedPreferences` so users don't re-authenticate on relaunch
-- **Ticket lifecycle** — create, track, and close tickets with expandable list UI
-- **Splash screen + routing** — app checks auth state on launch and routes accordingly
-- **Profile screen** — editable user profile accessible from the nav drawer
+A Flutter app for filing, triaging, and tracking support tickets from your phone. Role-based access control, Firebase-backed auth, and session persistence that survives app restarts — so users are never re-authenticating mid-shift.
 
 ---
 
-## Tech Stack
+## Why BSPAssist? 🤔
 
-| Layer | Tools |
-|---|---|
-| Framework | Flutter / Dart 3.x |
-| Auth & Backend | Firebase Authentication, Firebase Core |
-| Local Persistence | SharedPreferences |
-| Testing | flutter_test, Mockito |
-| Linting | flutter_lints |
+Most ticketing tools are web-only and assume a desk. BSPAssist is designed for mobile-first environments where tickets need to be raised, assigned, and resolved on the go — with the app smart enough to stay authenticated between sessions and route each user to exactly the right view based on their role.
 
 ---
 
-## Project Structure
+## How the Auth Flow Works 🔐
+
+The auth check is the backbone of the app. On cold start, the app reads a persisted token from `SharedPreferences` *before* Firebase initializes — skipping the login screen entirely for returning users. Sign-out clears the token and hard-redirects; the route table never exposes the dashboard to an unauthenticated state.
+
+```
+main() → checkIfLoggedIn()
+           ├── token found  → /dashboard
+           └── no token     → / (SplashScreen → Login)
+```
+
+Role-based views are handled through isolated dashboard components — `DashboardPage`, `UserDashboard`, and `AdminDashboard` — keeping privilege-specific logic cleanly separated rather than conditionally crammed into one bloated screen.
+
+---
+
+## Tech Stack 🛠️
+
+| Layer | Choice | Why |
+|---|---|---|
+| 📱 Framework | Flutter / Dart 3.x | Single codebase for Android + iOS |
+| 🔑 Auth | Firebase Authentication | Managed identity, email/password, extensible to OAuth |
+| 💾 Persistence | SharedPreferences | Lightweight session token storage — no DB overhead for auth state |
+| 🧪 Testing | flutter_test + Mockito | Widget tests + mock-based unit testing |
+
+---
+
+## Project Structure 📁
 
 ```
 lib/
-├── components/        # Reusable widgets (drawer, list tile, text box, ticket card)
+├── components/        # Drawer, list tiles, ticket card, reusable inputs
 ├── pages/
-│   ├── Dashboard/     # Admin, User, and main dashboard views
-│   ├── profile/       # Profile screen
+│   ├── Dashboard/     # Role-split views: User, Admin, main dashboard
+│   ├── profile/       # Editable user profile
 │   ├── login_page.dart
 │   ├── register.dart
 │   └── splash_screen.dart
 ├── firebase_options.dart
-└── main.dart          # Entry point — auth check + route initialization
+└── main.dart          # Auth check → route resolution on cold start
 ```
 
 ---
 
-## Getting Started
+## Getting Started 🚀
 
-**Prerequisites:** Flutter SDK ≥ 3.0.6, a Firebase project with Authentication enabled.
+Requires Flutter ≥ 3.0.6 and a Firebase project with Authentication enabled.
 
 ```bash
-# Clone the repo
 git clone https://github.com/Plk-g/BSPAssist-Ticketing.git
 cd BSPAssist-Ticketing
-
-# Install dependencies
 flutter pub get
-
-# Run on a connected device or emulator
 flutter run
 ```
 
-> **Note:** You'll need your own `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) from your Firebase project. The files in this repo are placeholders.
+> 🔧 Drop your own `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) into the appropriate directories — the ones in this repo are project-specific and won't work out of the box.
 
 ---
 
-## Running Tests
+## Testing ✅
 
 ```bash
 flutter analyze   # Static analysis
-flutter test      # Unit + widget tests
+flutter test      # Widget + unit tests
 ```
 
 ---
 
-## Roadmap
+## What's Next 🗺️
 
-- [ ] Firestore integration for real-time ticket updates
-- [ ] Push notifications for ticket status changes
-- [ ] Admin analytics dashboard
-- [ ] SLA timers and escalation rules
-- [ ] Multi-language support (EN + HI)
+- [ ] 🔄 Firestore integration for live ticket sync across devices
+- [ ] 🔔 Push notifications on ticket status transitions
+- [ ] ⏱️ SLA timers with escalation rules
+- [ ] 📊 Admin analytics dashboard
+- [ ] 🌐 Multi-language support (EN + HI)
 
 ---
 
-## Author
+## Author ✍️
 
-**Palak Gupta**  
+**Palak** · MS CS @ NYU Tandon  
 [GitHub](https://github.com/Plk-g)
 
 ---
 
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
+*MIT License*
